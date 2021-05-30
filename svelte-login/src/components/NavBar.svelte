@@ -32,7 +32,7 @@
     const links =[
         ['./index','home','info',false, 'shop'],
         ['./about','about','warning',true,'display'],
-        ['./login','login','success',true,'person-circle'],
+        ['./Login','login','success',true,'person-circle'],
         ['./logout','logout','primary',true,'arrow-right-square'],
         ['./blog','blog','danger',true,'globe']
     ];
