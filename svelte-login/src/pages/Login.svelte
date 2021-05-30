@@ -7,7 +7,7 @@
     import Remote from '../remote/remo.svelte';
     import StatusBar from'../components/StatusBar.svelte';
     import  {setLoginUte} from '../components/NavBar.svelte'; //funzione definita in navbar
-    
+ //cld
 
     let childstatusbar;
     let childremote;
