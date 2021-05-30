@@ -28,13 +28,13 @@
 //  load menu
 //================================================    
     onMount(async () => {
-      console.log("onMount , navbar");
-      callRemoteMenu('', setResult, setErr);// call rest
-	  });
+        console.log("onMount , navbar");
+        callRemoteMenu('', setResult, setErr);// call rest
+    });
 
     function setResult(data){
         console.log("setResult links : ",data.menu);
-          menu=data.menu;
+         menu=data.menu;
         //  console.log(" links : ",links1);
     }
     function setErr(err){
