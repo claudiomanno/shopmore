@@ -117,7 +117,7 @@
     justify-content: center;
     margin-top:30px;
   }
-</style>
+</style> 
  <!-- on:input={ changeEvent} 
 on:change={changeEvent}
 -->
