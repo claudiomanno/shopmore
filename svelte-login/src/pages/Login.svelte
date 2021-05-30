@@ -8,8 +8,6 @@
     import StatusBar from'../components/StatusBar.svelte';
     import  {setLoginUte} from '../components/NavBar.svelte'; //funzione definita in navbar
 
-    const cld="cld";
-
     let childstatusbar;
     let childremote;
     let name = '';
