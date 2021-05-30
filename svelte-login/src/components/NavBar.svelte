@@ -28,13 +28,13 @@
 //  load menu
 //================================================    
     onMount(async () => {
-      console.log("onMount , navbar");
-      callRemoteMenu('', setResult, setErr);// call rest
-	  });
+        console.log("onMount , navbar");
+        callRemoteMenu('', setResult, setErr);// call rest
+    });
 
     function setResult(data){
         console.log("setResult links : ",data.menu);
-          menu=data.menu;
+         menu=data.menu;
         //  console.log(" links : ",links1);
     }
     function setErr(err){
@@ -144,6 +144,7 @@
     </Collapse>
   </Navbar>
  
+<<<<<<< HEAD
 <div class="py-2">
   {#if !menu} 
     <p class="loading">loading...</p>
@@ -153,3 +154,10 @@
     <div class="errore">si è verificato un errore : {errore} </div>
   {/if}
 </div>
+=======
+<div class="py-2"></div>
+
+{#if errore}
+   <div>si è verificato un errore : {errore} </div>
+{/if}
+>>>>>>> c2ad562d49ae847f3d49b7ab86d74cc706dbeb76
