@@ -95,7 +95,6 @@
 </style>
 
   <!-- svelte-ignore missing-declaration -->
- 
   <Navbar class="navbar navbar-dark bg-dark " light expand="md">
       
     <NavbarBrand  href="/">
