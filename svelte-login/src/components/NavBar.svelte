@@ -18,10 +18,30 @@
     import { onMount, onDestroy } from 'svelte';
     import { Icon } from 'sveltestrap';
     import {Collapse,Navbar,NavbarToggler,NavbarBrand,Nav,NavItem,NavLink,Button} from 'sveltestrap';
-  
+    import  {callRemoteMenu} from '../remote/remo.svelte'; //funzione definita in navbar
+
     let isOpen = false;
     let classe="ico";
-  
+    let errore;
+    let menu;
+//================================================
+//  load menu
+//================================================    
+    onMount(async () => {
+      console.log("onMount , navbar");
+      callRemoteMenu('', setResult, setErr);// call rest
+	  });
+
+    function setResult(data){
+        console.log("setResult links : ",data.menu);
+          menu=data.menu;
+        //  console.log(" links : ",links1);
+    }
+    function setErr(err){
+      console.log("setErr : ",err);
+      errore = err; 
+    }
+//==============================
     function handleUpdate(event) {
       isOpen = event.detail.isOpen;
     }
@@ -29,13 +49,13 @@
       show=hideshow;
     }
     const colors = ['primary','secondary','success','danger','warning','info','light','dark'];
-    const links =[
-        ['./index','home','info',false, 'shop'],
-        ['./about','about','warning',true,'display'],
-        ['./Login','login','success',true,'person-circle'],
-        ['./logout','logout','primary',true,'arrow-right-square'],
-        ['./blog','blog','danger',true,'globe']
-    ];
+    // const links =[
+    //     ['./index','home','info',false, 'shop'],
+    //     ['./about','about','warning',true,'display'],
+    //     ['./Login','login','success',true,'person-circle'],
+    //     ['./logout','logout','primary',true,'arrow-right-square'],
+    //     ['./blog','blog','danger',true,'globe']
+    // ];
 
     function handleOnClick(event) {
       console.log("aaaaaaaaaaaaaa:", event);
@@ -74,23 +94,26 @@
     </NavbarBrand>
 
     <Nav class="ms-auto" navbar>
-      {#each links as [path, name,color,show, icon]}
-        {#if !show}
-          <NavItem >
-            <Button on:click={() => handleOnClick($url(path))} 
-              href={$url(path)} {color} class="btp" 
-              size="sm"
-              >
-              <Icon name={icon} /> {name}
-            </Button>
-          </NavItem>
+      {#if menu}
+        {#each menu as [path, name,color,show, icon]}
+          {#if !show}
+            <NavItem >
+              <Button on:click={() => handleOnClick($url(path))} 
+                href={$url(path)} {color} class="btp" 
+                size="sm"
+                >
+                <Icon name={icon} /> {name}
+              </Button>
+            </NavItem>
+          {/if}
+        {/each}
         {/if}
-      {/each}
     </Nav>
     <NavbarToggler on:click={() => (isOpen = !isOpen)} />
     <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
       <Nav class="ms-auto" navbar>
-          {#each links as [path, name,color,show, icon]}
+        {#if menu}
+          {#each menu as [path, name,color,show, icon]}
             {#if show}
               <NavItem >
                 <Button size="sm" on:click={() => handleOnClick($url(path))} 
@@ -103,8 +126,13 @@
               </NavItem>
             {/if}
          {/each}
+        {/if}
       </Nav>
     </Collapse>
   </Navbar>
  
 <div class="py-2"></div>
+
+{#if errore}
+   <div>si è verificato un errore : {errore} </div>
+{/if}
