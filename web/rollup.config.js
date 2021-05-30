@@ -17,7 +17,7 @@ function serve() {
 	return {
 		writeBundle() {
 			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start'], {
+			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
 				shell: true
 			});
@@ -34,7 +34,7 @@ export default {
 		sourcemap: true,
 		format: 'iife',
 		name: 'app',
-		file: 'web/build/bundle.js'
+		file: 'public/build/bundle.js'
 	},
 	plugins: [
 		svelte({
@@ -62,9 +62,9 @@ export default {
 		// the bundle has been generated
 		!production && serve(),
 
-		// Watch the `web` directory and refresh the
+		// Watch the `public` directory and refresh the
 		// browser on changes when not in production
-		!production && livereload('web'),
+		!production && livereload('public'),
 
 		// If we're building for production (npm run build
 		// instead of npm run dev), minify

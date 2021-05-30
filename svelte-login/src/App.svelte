@@ -1,38 +1,10 @@
 <script>
-import router from "page";
-import routes from './Routes/route.js';
-import NavBar from "./components/NavBar.svelte";
-import StatusBar from './components/StatusBar.svelte'
-
-let page = null;
-  let params = {};
-  let user = true;
-
-  routes.forEach(route => {
-    router(
-      route.path,
-      (ctx, next) => {
-        params = { ...ctx.params };
-        next();
-      },
-      () => {
-        if (route.auth && !user) {
-          router.redirect("/");
-        } else {
-          page = route.component;
-        }
-      }
-    );
-  });
-  router.start();
+	import {Router} from '@sveltech/routify';
+	import {routes} from '@sveltech/routify/tmp/routes';
+	
 </script>
-
-
-
-<main style="">
-	<NavBar />
-	<StatusBar></StatusBar>
-	  <svelte:component this={page} {params} />
-  </main>
-
-  
+<svelte:head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+ 
+</svelte:head>
+<Router {routes}/>

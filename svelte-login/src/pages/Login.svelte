@@ -1,112 +1,124 @@
-<script>
-    import callRemote from '../remote/Remote.js';
-    // let remote = new Remote();
-    import Child from '../components/StatusBar.svelte';
-    let child;
-    let mes;
+<script lang="ts">
+    import {
+      Button,Card,CardBody,CardFooter,CardHeader,CardSubtitle,CardText,CardTitle,
+      FormGroup,  Input, Label
+    } from 'sveltestrap';
+    import { onMount } from 'svelte';
+    import Remote from '../remote/remo.svelte';
+    import StatusBar from'../components/StatusBar.svelte';
+    import  {setLoginUte} from '../components/NavBar.svelte'; //funzione definita in navbar
     
-    function remoteLogin(){
-        document.querySelector('#formLogin').addEventListener('submit', (e) => {
-// blocco evento di submit del form
-            console.log('event.default');
-            e.preventDefault();
 
-            const form = document.querySelector('#formLogin');
-            const data = formToJSON(form.elements);
-            console.log(data);
+    let childstatusbar;
+    let childremote;
+    let name = '';
+    let password = '';
+    let focused = false;
+    let mes="";
 
-            const jdata = JSON.stringify(data);
-            console.log(jdata);
-           
-            child.toggle(false, "Elaborazione in corso", true);
-    
-            callRemote(data, setResult, setErr);
-        });
-        const formToJSON = elements => [].reduce.call(elements, (data, element) => {
-            data[element.name] = element.value;
-            return data;
-        }, {}); 
+    onMount(() => {
+       console.log("init-login");
+       
+    });
+    const changeEvent = (Event) => {
+        console.log("event : ", Event.target.value);
+    };
+   
+    function submit(Event){
+        console.log("valueForm ", {name}, {password});
+        const data ={
+          nome:name,
+          password:password
+        }
+        // console.log(data);
+        childstatusbar.toggle(false, "Elaborazione in corso", true);// aggiorna la statusbar
+        childremote.callRemote(data, setResult, setErr);// call rest
 
-        function setResult(res){
-
+       function setResult(res){
             mes=res.ragsoc.ragsoc;
             if(res.id === "OK"){
-                child.toggle(false, res.ragsoc.ragsoc, true);
+                childstatusbar.toggle(false, res.ragsoc.ragsoc, true);
+                setLoginUte(res.ragsoc.ragsoc);
             }else{
-                child.toggle(true, res.ragsoc.ragsoc, true);
+                childstatusbar.toggle(true, res.ragsoc.ragsoc, true);
             }
             hideStatusBar(3000);
-        }
-        function setErr(content){
-            child.toggle(true, content, true);
+       }
+
+       function setErr(content){
+            childstatusbar.toggle(true, content, true);
             hideStatusBar(5000);
-        }
-        function hideStatusBar(time){
-
+       }
+      
+       function hideStatusBar(time){
             setTimeout(function(){
-                child.toggle(false,'',false);
+              childstatusbar.toggle(false,'',false);
             }, time);
-        }
+       }
     }
-
-    window.remoteLogin= remoteLogin;
-</script>
+   
+  </script>
+  <!-- svelte-ignore missing-declaration -->
+  <Remote bind:this="{childremote}" />
+  <!-- svelte-ignore missing-declaration -->
+  <StatusBar bind:this="{childstatusbar}" />
+  
+  <div class="py-4 box">
+  <!-- svelte-ignore missing-declaration -->
+  <Card class="mt-4 " style="width: 38rem; justify-content: center;align-items-center " >
+    <CardHeader>
+      <CardSubtitle style="text-align: left; color:brown">Autenticazione</CardSubtitle>
+      <CardTitle style="text-align: center;">Login</CardTitle>
+    </CardHeader>
     
-<Child bind:this="{child}" />
-
-<div class="container  ">
-    <div class="row justify-content-center">
-    <div class="card "  style="width: 38rem;">
-        <div class="card-header">
-          Autenticazione
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Login</h5>
-         
-          <div class="row">
-            <div class="col-md-6 offset-md-3">
-              <form name="loginForm" id="formLogin" onSubmit="return false">
-                <div class="form-group">
-                  <label for="email">Nome</label>
-                  <input
-                    required
-                    class="form-control"
+    <CardBody>
+      <CardText >
+        <form name="loginForm" id="formLogin"on:submit|preventDefault={submit}>
+            <FormGroup>
+                <Label>Username</Label>
+                <Input
                     type="text"
-                    name="nome"
-                    id="nome"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input
-                    class="form-control"
                     required
-                    minlength="6"
-                    ngModel
+                    on:blur={() => (focused = false)}
+                    on:focus={() => (focused = true)}
+                    bind:value={name}
+                />
+                <Label>Password</Label>
+                <Input
                     type="password"
-                    name="password"
-                    id="password"
-                  />
-                </div>
-                <div class="form-group py-4">
-                  <div class="row">
-                    <div class="col-6">
-                        <button class="btn btn-primary  btn-lg" onclick="remoteLogin()">Log in</button>
-                    </div>
-                    <div class="col-6">
-                       
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <footer class="footer fw-bolder">
-            {#if mes}
-                {mes}
-            {/if}
-          </footer>
-        </div>
-      </div>
-    </div>
+                    required
+                    on:blur={() => (focused = false)}
+                    on:focus={() => (focused = true)}
+                    bind:value={password}
+                />
+            </FormGroup>
+            <Button on:click={changeEvent}>Button</Button>
+        </form>
+      </CardText>
+    </CardBody>
+
+    <!-- <button on:click={setLoginUte} 
+    
+    style="border-radius:9px;"
+    >Clear All
+</button> -->
+
+    <CardFooter class="py-4">
+        {#if mes}
+            {mes}
+        {/if}
+    </CardFooter>
+  </Card>
 </div>
+
+<style>
+  .box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top:30px;
+  }
+</style>
+ <!-- on:input={ changeEvent} 
+on:change={changeEvent}
+-->

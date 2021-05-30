@@ -1,31 +1,110 @@
-<script>
-    
+
+<script context="module">
+  let uteauth='Eseguire il login';
+ // lo script login richiama la funzione quando torna la callrest
+  export function  setLoginUte(ragsoc){
+      
+       uteauth=ragsoc; // viene inizializzata dalla login purtroppo non riflette la variazione nella pagina html
+       //uso document x aggiornare l'interfaccia
+       const ico = document.getElementById("idutei");
+       let ute   = document.getElementById("idute");
+           ute.innerText=ragsoc + ' ';
+           //ute.appendChild(ico);
+           ico.setAttribute("class","icol bi-person");
+    }
 </script>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <a class="navbar-brand" href="/">Navbar</a>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="/" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-            </ul>
-            <form class="d-flex">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
-        </div>
-        </div>
-</nav>
-<div class="py-1"></div>
-</header>
+<script>
+    import { url, isActive } from '@sveltech/routify';
+    import { onMount, onDestroy } from 'svelte';
+    import { Icon } from 'sveltestrap';
+    import {Collapse,Navbar,NavbarToggler,NavbarBrand,Nav,NavItem,NavLink,Button} from 'sveltestrap';
+  
+    let isOpen = false;
+    let classe="ico";
+  
+    function handleUpdate(event) {
+      isOpen = event.detail.isOpen;
+    }
+    export const showHide = (hideshow) =>{
+      show=hideshow;
+    }
+    const colors = ['primary','secondary','success','danger','warning','info','light','dark'];
+    const links =[
+        ['./index','home','info',false, 'shop'],
+        ['./about','about','warning',true,'display'],
+        ['./login','login','success',true,'person-circle'],
+        ['./logout','logout','primary',true,'arrow-right-square'],
+        ['./blog','blog','danger',true,'globe']
+    ];
+
+    function handleOnClick(event) {
+      console.log("aaaaaaaaaaaaaa:", event);
+      isOpen=false;
+    }
+   
+</script> 
+
+
+<style>
+  /* class:selected={$isActive(path)} */
+  :global(.btp){
+    margin: 8px;
+    padding: 10px;
+    width:100px;
+    height: 70%;
+  }
+  :global(.ico){
+    color:red;
+  }
+  :global(.icol){
+    color:green;
+  }
+</style>
+
+  <!-- svelte-ignore missing-declaration -->
+ 
+  <Navbar class="navbar navbar-dark bg-dark " light expand="md">
+      
+    <NavbarBrand  href="/">
+      <Icon name='person' id="idutei" class={classe}/>
+    </NavbarBrand>
+
+    <NavbarBrand id="idute" href="/">
+      {uteauth}
+    </NavbarBrand>
+
+    <Nav class="ms-auto" navbar>
+      {#each links as [path, name,color,show, icon]}
+        {#if !show}
+          <NavItem >
+            <Button on:click={() => handleOnClick($url(path))} 
+              href={$url(path)} {color} class="btp" 
+              size="sm"
+              >
+              <Icon name={icon} /> {name}
+            </Button>
+          </NavItem>
+        {/if}
+      {/each}
+    </Nav>
+    <NavbarToggler on:click={() => (isOpen = !isOpen)} />
+    <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+      <Nav class="ms-auto" navbar>
+          {#each links as [path, name,color,show, icon]}
+            {#if show}
+              <NavItem >
+                <Button size="sm" on:click={() => handleOnClick($url(path))} 
+                        href={$url(path)} 
+                        {color} 
+                        class="btp" 
+                >
+                <Icon name={icon} /> {name} 
+                </Button>
+              </NavItem>
+            {/if}
+         {/each}
+      </Nav>
+    </Collapse>
+  </Navbar>
+ 
+<div class="py-2"></div>

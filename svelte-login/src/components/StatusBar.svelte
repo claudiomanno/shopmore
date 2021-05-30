@@ -1,12 +1,12 @@
-<script>
+<script lang="ts">
+    import { Alert } from 'sveltestrap';
+
     let isActive = false;
     let mesremo  = '';
     export let name = "alert-primary";
-
-	export const toggle = (tipoclasse, mes, hideshow) =>{
+    export const toggle = (tipoclasse, mes, hideshow) =>{
         
         mesremo = mes;
-        // isActive = ! isActive;
         isActive=hideshow;
 
         if(tipoclasse){
@@ -17,10 +17,10 @@
     }  
   </script>
 
-<div>
-    {#if isActive}
-        <div class="alert {name}" role="alert">
+
+<!-- svelte-ignore missing-declaration -->
+{#if isActive}
+    <Alert color="info" dismissible  class="alert {name}">
             {mesremo}
-        </div>
-    {/if}
-</div>
+    </Alert>
+{/if}
