@@ -13605,11 +13605,11 @@ var app = (function () {
     			t1 = text("Applicazione Sveltejs e Sveltestrap");
     			attr_dev(div, "class", "container");
     			add_location(div, file$6, 8, 4, 130);
-    			attr_dev(span0, "class", "icon svelte-1ylw96z");
+    			attr_dev(span0, "class", "icon svelte-16j787o");
     			add_location(span0, file$6, 10, 26, 196);
-    			attr_dev(span1, "class", "tleft svelte-1ylw96z");
+    			attr_dev(span1, "class", "tleft svelte-16j787o");
     			add_location(span1, file$6, 10, 6, 176);
-    			attr_dev(footer, "class", "footer footerp svelte-1ylw96z");
+    			attr_dev(footer, "class", "footer footerp svelte-16j787o");
     			add_location(footer, file$6, 6, 0, 90);
     		},
     		l: function claim(nodes) {
