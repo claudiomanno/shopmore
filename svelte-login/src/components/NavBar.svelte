@@ -79,6 +79,19 @@
   :global(.icol){
     color:green;
   }
+  .loading{
+    background-color: green;
+    width: 40%;
+    height: 60px;
+    text-align: center;
+  }
+  .errore{
+    margin-top: 10px;
+    background-color: red;
+    width: 40%;
+    text-align: left;
+  }
+  
 </style>
 
   <!-- svelte-ignore missing-declaration -->
@@ -131,8 +144,12 @@
     </Collapse>
   </Navbar>
  
-<div class="py-2"></div>
-
-{#if errore}
-   <div>si è verificato un errore : {errore} </div>
-{/if}
+<div class="py-2">
+  {#if !menu} 
+    <p class="loading">loading...</p>
+  {/if}
+  
+  {#if errore}
+    <div class="errore">si è verificato un errore : {errore} </div>
+  {/if}
+</div>
